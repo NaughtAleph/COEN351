@@ -14,7 +14,7 @@ include("auth.php");
 <p>Welcome <?php echo $_SESSION['username']; ?>!</p>
 <p>This is secure area.</p>
 <p><a href="">Dashboard</a></p>
-<a href="">Logout</a>
+<a href="logout.php">Logout</a>
 </div>
 </body>
 </html>
