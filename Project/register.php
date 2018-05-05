@@ -42,15 +42,88 @@ if (isset($_REQUEST['username'])){
     $cpassword = stripslashes($_REQUEST['cnfpassword']);
     $cpassword = mysqli_real_escape_string($con,$cpassword);
     
-    $query = "INSERT into `project` (id,username,firstname,lastname,contact,email,password) VALUES (NULL,'$username','$firstname','$lastname','$contact','$email','$password')";echo "$query";
+    $passpattern = '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{4,}/';
+    $emailpattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+
+
+
+    $query = "SELECT username FROM project where username='$username'";
     $result = mysqli_query($con,$query);
-    echo "$result";
-    if($result){
-            echo "<div class='form'>
-            <h3>You are registered successfully.</h3>
-            <br/>Click here to <a href='login.php'>Login</a></div>";
-                }
-    }else{
+    $rows = mysqli_num_rows($result);
+        
+    if($rows>0)
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Username already taken.</h3>
+        <h4>should choose diffrent username,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>"; 
+    }
+
+    else if(!preg_match($passpattern, $password))
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Password pattern doesn't match.</h3>
+        <h4> Minimun 1 capital, small, special and numeric,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>";
+    }
+    else if(!preg_match($emailpattern, $email))
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Email pattern doesn't match.</h3>
+        <h4>Email enter is wrong format,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>";
+    }
+    else if ($cpassword != $password)
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Confirm Password Error.</h3>
+        <h4>should match password,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>";
+    }
+    else if(strlen($username)<8)
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Username Error.</h3>
+        <h4>should be more than 8 character,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>";   
+    }
+    else if(strlen($contact)!==10)
+    {
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>ERROR</u></h5><hr>
+        <h3>Contact Error.</h3>
+        <h4>should be 10 digit,.....</h4>
+        <br/>Click here to again try<a href='register.php'>Login</a></div>";   
+    }
+    
+    else {
+            $hashpass = md5($password);
+            $query = "INSERT into `project` (id,username,firstname,lastname,contact,email,password) VALUES (NULL,'$username','$firstname','$lastname','$contact','$email','$hashpass')";echo "$query";
+            $result = mysqli_query($con,$query);
+        //    echo "$result";
+
+            if($result){
+        echo "<div class='container my-container'> 
+        <form method='POST'>
+        <hr><h5><strong><em><u>SUCCESS</u></h5><hr>
+                    <h3>You are registered successfully.</h3>
+                    <br/>Click here to <a href='login.php'>Login</a></div>";
+                        }
+            }
+
+}
+    else{
 ?>
 <form name="myform" method="post" action="">
 	<div class="container my-container">
