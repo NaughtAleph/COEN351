@@ -21,9 +21,11 @@ if(isset($_POST['username']))
     $username = mysqli_real_escape_string($con,$username);
     $password = stripslashes($_REQUEST['password']);
     $password = mysqli_real_escape_string($con,$password);
+    echo "$username";
+    $hashpass = md5($password);
 
     //Checking is user existing in the database or not
-    $query = "SELECT * FROM project WHERE username='$username'and password='$password'";
+    $query = "SELECT * FROM project WHERE username='$username'and password='$hashpass'";
     $result = mysqli_query($con,$query);
     $rows = mysqli_num_rows($result);
         if($rows==1){
@@ -48,7 +50,7 @@ if(isset($_POST['username']))
 <form method="POST" action="">
        	<hr><h5><strong><em><u>LOGIN</u></h5><hr>
 
-    	<label for="username">First name</label>
+    	<label for="username">Username name</label>
         <input type="text" class="form-control mx-sm-3" id="username" name="username" aria-describedby="userHelp" 
         placeholder="Enter UserName" required="true">
         <small id="userHelp" class="form-text text-muted">Enter your username.</small>
