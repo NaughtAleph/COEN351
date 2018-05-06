@@ -7,6 +7,7 @@
 <html>
 <head>
 	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <style type="text/css">
 .my-container{
@@ -56,7 +57,7 @@ if (isset($_REQUEST['username']))
     else 
     {
         $hashpass = md5($newpassword);
-        $query = "UPDATE project SET password = '$hashpass' where email='$email' and username='$username'";
+        $query = "UPDATE Accounts SET password = '$hashpass' where email='$email' and username='$username'";
         $result = mysqli_query($con,$query);
         $rows = mysqli_num_rows($result);
 

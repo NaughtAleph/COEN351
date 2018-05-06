@@ -22,14 +22,14 @@ if(isset($_POST['username']))
     $username = mysqli_real_escape_string($con,$username);
     $password = stripslashes($_REQUEST['password']);
     $password = mysqli_real_escape_string($con,$password);
-    echo "$username";
-    $hashpass = md5($password);
+    $hashpass = password_hash($password, PASSWORD_BCRYPT);
 
     //Checking is user existing in the database or not
-    $query = "SELECT * FROM project WHERE username='$username'and password='$hashpass'";
+    $query = "SELECT password FROM Accounts WHERE username='$username'";
     $result = mysqli_query($con,$query);
-    $rows = mysqli_num_rows($result);
-        if($rows==1){
+	//die(password_verify($password,mysqli_fetch_row($result)[0]));
+    //$rows = mysqli_num_rows($result);
+	if(password_verify($password,mysqli_fetch_row($result)[0])){
         $_SESSION['username'] = $username;
             // Redirect user to index.php
         echo "<script> location.href='mainpage.php'; </script>";
