@@ -49,18 +49,22 @@ INSERT INTO
 
 CREATE TABLE Accounts (
 	id INT PRIMARY KEY AUTO_INCREMENT,
-	username VARCHAR(255),
-	password VARCHAR(255)
+	username VARCHAR(255) NOT NULL,
+	firstname VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	contact VARCHAR(255),
+	email VARCHAR(255),
+	password VARCHAR(255) NOT NULL
 );
 
-INSERT INTO Accounts (username, password)
-			VALUES ('admin','$2y$10$fyQPTz5KKcpceOqltS9gmuAL8IltzLljNwPM5Z96N.2h4twpwYQ16');
+INSERT INTO Accounts (username,firstname,lastname,contact,email,password)
+			VALUES ('admin','admin','admin','1111111111','admin@admin.admin','$2y$10$fyQPTz5KKcpceOqltS9gmuAL8IltzLljNwPM5Z96N.2h4twpwYQ16');
 
-INSERT INTO Accounts (username, password)
-			VALUES ('test','$2y$10$oqUgiWIyGP86c6YJ6fj8juj7Gk2.VCE7UVylfPpMPJgbVnHrFy6kK');
+INSERT INTO Accounts (username,firstname,lastname,contact,email,password)
+			VALUES ('test','test','test','1234567890','test@test.test','$2y$10$oqUgiWIyGP86c6YJ6fj8juj7Gk2.VCE7UVylfPpMPJgbVnHrFy6kK');
 
-INSERT INTO Accounts (username, password)
-			VALUES ('user1','$2y$10$uHyv3YoPqSZ8UhxiYRPsRuHFfRYb9OaHBUQi0s8LYbDicT2ti3ejG');
+INSERT INTO Accounts (username,firstname,lastname,contact,email,password)
+			VALUES ('user1','user','name','1231231234','user@name.com','$2y$10$uHyv3YoPqSZ8UhxiYRPsRuHFfRYb9OaHBUQi0s8LYbDicT2ti3ejG');
 
 CREATE TABLE Reviews(
 	id INT PRIMARY KEY AUTO_INCREMENT,

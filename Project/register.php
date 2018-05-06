@@ -7,6 +7,8 @@
 <html>
 <head>
 	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
 <style type="text/css">
@@ -47,7 +49,7 @@ if (isset($_REQUEST['username'])){
 
 
 
-    $query = "SELECT username FROM project where username='$username'";
+    $query = "SELECT username FROM Accounts where username='$username'";
     $result = mysqli_query($con,$query);
     $rows = mysqli_num_rows($result);
         
@@ -108,10 +110,11 @@ if (isset($_REQUEST['username'])){
     }
     
     else {
-            $hashpass = md5($password);
-            $query = "INSERT into `project` (id,username,firstname,lastname,contact,email,password) VALUES (NULL,'$username','$firstname','$lastname','$contact','$email','$hashpass')";echo "$query";
+            $hashpass = password_hash($password, PASSWORD_BCRYPT);
+            $query = "INSERT into Accounts (username,firstname,lastname,contact,email,password) VALUES ('$username','$firstname','$lastname','$contact','$email','$hashpass')";
+			//echo "$query";
             $result = mysqli_query($con,$query);
-        //    echo "$result";
+            //echo "$result";
 
             if($result){
         echo "<div class='container my-container'> 
