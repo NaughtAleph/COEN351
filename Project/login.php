@@ -27,9 +27,8 @@ if(isset($_POST['username']))
     //Checking is user existing in the database or not
     $query = "SELECT password FROM Accounts WHERE username='$username'";
     $result = mysqli_query($con,$query);
-	//die(password_verify($password,mysqli_fetch_row($result)[0]));
     //$rows = mysqli_num_rows($result);
-	if(password_verify($password,mysqli_fetch_row($result)[0])){
+	if(password_verify($password,mysqli_fetch_assoc($result)['password'])){
         $_SESSION['username'] = $username;
             // Redirect user to index.php
         echo "<script> location.href='mainpage.php'; </script>";
