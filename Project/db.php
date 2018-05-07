@@ -4,7 +4,7 @@
 $con = mysqli_connect(
 	"localhost",			// host
 	"root",					// username
-	"buttermilksornothing",	// password
+	"",	// password
 	"coen351"				// database name
 	);
 // Check connection
