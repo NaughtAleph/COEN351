@@ -53,11 +53,18 @@ $refine = $_GET["refine"];
 			}
 			$result = mysqli_query($con,$query);
 			while($row = mysqli_fetch_array($result)) {
-				echo "<div class='book-item' onclick='test(this)'>".
-						"<div class='book-title'>$row[title]</div>".
-						"<div class='book-author'>$row[author]</div>".
-						"<div class='book-price'>$$row[price]</div>".
-					"</div>";
+				?>
+				<div class='book-item'>
+					<div class='book-title'><?php echo $row["title"]; ?></div>
+					<div class='book-author'><?php echo $row["author"]; ?></div>
+					<div class='book-price'>$<?php echo $row["price"]; ?></div>
+					<form class='add-to-cart' method="post" action="mainpage.php">
+						<input type='number' class='input-num' name='number'>
+						<input type='hidden' value='<?php echo $row["id"]; ?>'>
+						<input type='submit' value='Add'>
+					</form>
+				</div>
+				<?php
 			}
 		?>
 	</div>

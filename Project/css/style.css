@@ -2,11 +2,12 @@
 	display: inline-block;
 	margin: 10px;
 	width: 150px;
-	height: 80px;
+	height: 100px;
 	vertical-align: top;
 	border: 1px solid grey;
 	box-shadow: 5px 5px 2px 2px grey;
 	padding: 5px;
+	position: relative;
 }
 
 .book-title {
@@ -15,4 +16,14 @@
 
 .book-author {
 	font-size: 14px;
+}
+
+.input-num {
+	width: 30px;
+}
+
+.add-to-cart {
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
 }
