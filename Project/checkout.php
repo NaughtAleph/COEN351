@@ -1,4 +1,6 @@
 <?php
+require("auth.php");
+require("db.php");
 $cc = "";
 $name = "";
 $month = 0;
@@ -9,8 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$month = $_POST["expireMonth"];
 	$year = $_POST["expireYear"];
 	$cvc = $_POST["cvc"];
-	//echo $cc;
-	//die(mysqli_real_escape_string($cc));
 }
 ?>
 
@@ -18,13 +18,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html>
 <head>
 	<title>Pay for shit</title>
-	<link rel="stylesheet" href="checkout.css">
+	<link rel="stylesheet" href="css/checkout.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1" crossorigin="anonymous">
-	<script src="checkout.js"></script>
+	<script src="js/checkout.js"></script>
 </head>
 <body>
-	<!--TODO: Get items from cart-->
+	<table>
+		<tr>
+			<th>Title</th>
+			<th>Number</th>
+			<th>Price Per Unit</th>
+			<th>Total Price</th>
+		</tr>
+		<?php
+			$cart = json_decode($_COOKIE["cart"], true);
+			foreach ($cart as $id=>$num) {
+				$result = mysqli_query($con, "SELECT * FROM Books WHERE id=$id");
+				while($row = mysqli_fetch_array($result)) {
+					?>
+						<tr><?php echo "<td>$row[title]</td><td>$num</td><td>$$row[price]</td><td>".sprintf("$%.2f",$num * $row["price"])."</td>"?></tr>
+					<?php
+				}
+			}
+		?>
+	</table>
 	<form method="post" action="checkout.php">
 <!-- possibly remove feature of remembering cc number and name, could be insecure -->
 		<input id="cc" name="cc" type="text"

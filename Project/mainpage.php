@@ -8,7 +8,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$num = mysqli_real_escape_string($con,stripslashes($_POST["number"]));
 	// id of book
 	$id = mysqli_real_escape_string($con,stripslashes($_POST["id"]));
-// TODO set cookie here
+
+	// set cookie
+	if($_COOKIE["cart"]) {
+		$cart = json_decode($_COOKIE["cart"],true);
+		if (array_key_exists($id,$cart))
+			$cart[$id] += $num;
+		else
+			$cart[$id] = $num;
+		setcookie("cart",json_encode($cart), time() + (86400 * 30), "/");
+	} else {
+		$cart = array($id => $num);
+		setcookie("cart",json_encode($cart),time() + (86400 * 30), "/");
+	}
 }
 ?>
 
@@ -18,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<meta charset="utf-8">
 	<title>Welcome Home</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="mainpage.js"></script>
+	<script src="js/mainpage.js"></script>
 	<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -26,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<p>Welcome <?php echo $_SESSION['username']; ?>!</p>
 		<p>This is secure area.</p>
 		<p><a href="">Dashboard</a></p>
-		<a href="logout.php">Logout</a>
+		<p><a href="logout.php">Logout</a></p>
+		<p><a href="checkout.php">Checkout</a></p>
 	</div>
 	<div class="sidebar">
 		<div>

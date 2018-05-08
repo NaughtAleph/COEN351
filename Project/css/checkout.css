@@ -1,0 +1,9 @@
+.error {
+	color:red;
+}
+
+th, td {
+	text-align: center;
+	padding: 2px;
+	border: 1px solid black;
+}
