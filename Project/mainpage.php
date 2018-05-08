@@ -2,6 +2,14 @@
 include("auth.php");
 require('db.php');
 $refine = $_GET["refine"];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	// number of books
+	$num = mysqli_real_escape_string($con,stripslashes($_POST["number"]));
+	// id of book
+	$id = mysqli_real_escape_string($con,stripslashes($_POST["id"]));
+// TODO set cookie here
+}
 ?>
 
 <!DOCTYPE html>
@@ -58,9 +66,9 @@ $refine = $_GET["refine"];
 					<div class='book-title'><?php echo $row["title"]; ?></div>
 					<div class='book-author'><?php echo $row["author"]; ?></div>
 					<div class='book-price'>$<?php echo $row["price"]; ?></div>
-					<form class='add-to-cart' method="post" action="mainpage.php">
-						<input type='number' class='input-num' name='number'>
-						<input type='hidden' value='<?php echo $row["id"]; ?>'>
+					<form class='add-to-cart' method="post" action="<?php $_SERVER["REQUEST_URI"]; ?>">
+						<input type='number' class='input-num' name='number' min="0">
+						<input type='hidden' name='id' value='<?php echo $row["id"]; ?>'>
 						<input type='submit' value='Add'>
 					</form>
 				</div>
