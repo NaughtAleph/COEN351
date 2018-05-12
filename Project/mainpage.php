@@ -9,17 +9,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	// id of book
 	$id = mysqli_real_escape_string($con,stripslashes($_POST["id"]));
 
-	// set cookie
-	if($_COOKIE["cart"]) {
-		$cart = json_decode($_COOKIE["cart"],true);
-		if (array_key_exists($id,$cart))
-			$cart[$id] += $num;
-		else
-			$cart[$id] = $num;
-		setcookie("cart",json_encode($cart), time() + (86400 * 30), "/");
-	} else {
-		$cart = array($id => $num);
-		setcookie("cart",json_encode($cart),time() + (86400 * 30), "/");
+	if(is_numeric($num)) {
+		// set cookie
+		if($_COOKIE["cart"]) {
+			$cart = json_decode($_COOKIE["cart"],true);
+			if (array_key_exists($id,$cart))
+				$cart[$id] += $num;
+			else
+				$cart[$id] = $num;
+			setcookie("cart",json_encode($cart), time() + (86400 * 30), "", true);
+		} else {
+			$cart = array($id => $num);
+			setcookie("cart",json_encode($cart),time() + (86400 * 30), "", true);
+		}
 	}
 }
 ?>
