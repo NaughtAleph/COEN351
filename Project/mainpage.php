@@ -11,17 +11,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	if(is_numeric($num)) {
 		// set cookie
-		if($_COOKIE["cart"]) {
+		if(isset($_COOKIE["cart"])) {
 			$cart = json_decode($_COOKIE["cart"],true);
 			if (array_key_exists($id,$cart))
 				$cart[$id] += $num;
 			else
 				$cart[$id] = $num;
-			setcookie("cart",json_encode($cart), time() + (86400 * 30), "", true);
+			setcookie("cart",json_encode($cart), time() + (86400 * 30),
+					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true);
 		} else {
 			$cart = array($id => $num);
-			setcookie("cart",json_encode($cart),time() + (86400 * 30), "", true);
-		}
+			setcookie("cart",json_encode($cart),time() + (86400 * 30),
+					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true);
+			}
 	}
 }
 ?>
