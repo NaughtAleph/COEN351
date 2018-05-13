@@ -21,7 +21,6 @@
 		$username = mysqli_real_escape_string($con,$username);
 		$password = stripslashes($_REQUEST['password']);
 		$password = mysqli_real_escape_string($con,$password);
-		$hashpass = password_hash($password, PASSWORD_BCRYPT);
 
 		//Checking is user existing in the database or not
 		$query = "SELECT password FROM Accounts WHERE username='$username'";
