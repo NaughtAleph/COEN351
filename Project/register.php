@@ -22,121 +22,123 @@
 <?php
 require('db.php');
 if (isset($_REQUEST['username'])){
-    
-    $firstname = stripslashes($_REQUEST['firstname']);
-    $firstname = mysqli_real_escape_string($con,$firstname); 
-    
-    $lastname = stripslashes($_REQUEST['lastname']);
-    $lastname = mysqli_real_escape_string($con,$lastname); 
-    
-    $contact = stripslashes($_REQUEST['contactnumber']);
-    $contact = mysqli_real_escape_string($con,$contact); 
-    
-    $email = stripslashes($_REQUEST['email']);
-    $email = mysqli_real_escape_string($con,$email);
-    
-    $username = stripslashes($_REQUEST['username']);
-    $username = mysqli_real_escape_string($con,$username);
+	
+	$firstname = stripslashes($_REQUEST['firstname']);
+	$firstname = mysqli_real_escape_string($con,$firstname); 
+	
+	$lastname = stripslashes($_REQUEST['lastname']);
+	$lastname = mysqli_real_escape_string($con,$lastname); 
+	
+	$contact = stripslashes($_REQUEST['contactnumber']);
+	$contact = mysqli_real_escape_string($con,$contact); 
+	
+	$email = stripslashes($_REQUEST['email']);
+	$email = mysqli_real_escape_string($con,$email);
+	
+	$username = stripslashes($_REQUEST['username']);
+	$username = mysqli_real_escape_string($con,$username);
 
-    $password = stripslashes($_REQUEST['password']);
-    $password = mysqli_real_escape_string($con,$password);
+	$password = stripslashes($_REQUEST['password']);
+	$password = mysqli_real_escape_string($con,$password);
 
-    $cpassword = stripslashes($_REQUEST['cnfpassword']);
-    $cpassword = mysqli_real_escape_string($con,$cpassword);
-    
-    $passpattern = '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{4,}/';
-    $emailpattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
+	$cpassword = stripslashes($_REQUEST['cnfpassword']);
+	$cpassword = mysqli_real_escape_string($con,$cpassword);
+	
+	$passpattern = '/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%&*()]).{4,}/';
+	$emailpattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
 
 
 
-    $query = "SELECT username FROM Accounts where username='$username'";
-    $result = mysqli_query($con,$query);
-    $rows = mysqli_num_rows($result);
-        
-    if($rows>0)
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Username already taken.</h3>
-        <h4>should choose diffrent username,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>"; 
-    }
+	$query = "SELECT username FROM Accounts where username='$username'";
+	$result = mysqli_query($con,$query);
+	$rows = mysqli_num_rows($result);
+		
+	if($rows>0) { ?>
+		<div class='container my-container'> 
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Username already taken.</h3>
+				<h4>should choose diffrent username,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php } else if(!preg_match($passpattern, $password)) { ?>
+		<div class='container my-container'> 
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Password pattern doesn't match.</h3>
+				<h4> Minimun 1 capital, small, special and numeric,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php } else if(!preg_match($emailpattern, $email)) { ?>
+		<div class='container my-container'> 
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Email pattern doesn't match.</h3>
+				<h4>Email enter is wrong format,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php } else if ($cpassword != $password) { ?>
+		<div class='container my-container'> 
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Confirm Password Error.</h3>
+				<h4>should match password,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php }	else if(strlen($username)<8) { ?>
+		<div class='container my-container'> 
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Username Error.</h3>
+				<h4>should be more than 8 character,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php } else if(strlen($contact)!==10) { ?>
+		<div class='container my-container'>
+			<form method='POST'>
+				<hr><h5><strong><em><u>ERROR</u></em></strong></h5><hr>
+				<h3>Contact Error.</h3>
+				<h4>should be 10 digit,.....</h4>
+				<br>
+				<p>Click here to try again <a href='register.php'>Register</a></p>
+			</form>
+		</div>
+	<?php } else {
+		$hashpass = password_hash($password, PASSWORD_BCRYPT);
+		$query = "INSERT into Accounts (username,firstname,lastname,contact,email,password) VALUES ('$username','$firstname','$lastname','$contact','$email','$hashpass')";
+		$result = mysqli_query($con,$query);
+		if($result) { ?>
+			<div class='container my-container'> 
+				<form method='POST'>
+					<hr><h5><strong><em><u>SUCCESS</u></em></strong></h5><hr>
+					<h3>You are registered successfully.</h3>
+					<br>
+					<p>Click here to <a href='login.php'>Login</a></p>
+				</form>
+			</div>
+		<?php }
+	}
 
-    else if(!preg_match($passpattern, $password))
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Password pattern doesn't match.</h3>
-        <h4> Minimun 1 capital, small, special and numeric,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>";
-    }
-    else if(!preg_match($emailpattern, $email))
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Email pattern doesn't match.</h3>
-        <h4>Email enter is wrong format,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>";
-    }
-    else if ($cpassword != $password)
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Confirm Password Error.</h3>
-        <h4>should match password,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>";
-    }
-    else if(strlen($username)<8)
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Username Error.</h3>
-        <h4>should be more than 8 character,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>";   
-    }
-    else if(strlen($contact)!==10)
-    {
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>ERROR</u></h5><hr>
-        <h3>Contact Error.</h3>
-        <h4>should be 10 digit,.....</h4>
-        <br/>Click here to again try<a href='register.php'>Login</a></div>";   
-    }
-    
-    else {
-            $hashpass = password_hash($password, PASSWORD_BCRYPT);
-            $query = "INSERT into Accounts (username,firstname,lastname,contact,email,password) VALUES ('$username','$firstname','$lastname','$contact','$email','$hashpass')";
-			//echo "$query";
-            $result = mysqli_query($con,$query);
-            //echo "$result";
-
-            if($result){
-        echo "<div class='container my-container'> 
-        <form method='POST'>
-        <hr><h5><strong><em><u>SUCCESS</u></h5><hr>
-                    <h3>You are registered successfully.</h3>
-                    <br/>Click here to <a href='login.php'>Login</a></div>";
-                        }
-            }
-
-}
-    else{
-?>
+} else{ ?>
 <form name="myform" method="post" action="">
 	<div class="container my-container">
 		<div class="form-group">
-			<fieldset class ="form-group">  
-				<hr><h5><strong><em><u>GENERAL</u></h5><hr>
+			<fieldset class ="form-group">
+				<hr><h5><strong><em><u>GENERAL</u></em></strong></h5><hr>
 
 				<label for="firstname">First name</label>
 				<input type="text" class="form-control mx-sm-3" id="firstname" name="firstname" aria-describedby="firstHelp" 
-    				placeholder="Enter First Name" required="true">
+					placeholder="Enter First Name" required="true">
 				<small id="firstHelp" class="form-text text-muted">Enter your first name.</small>
 				<br>
 
@@ -174,7 +176,7 @@ if (isset($_REQUEST['username'])){
 				<br>
 
 			</fieldset>
-		</div>  
+		</div>
 		<input type="submit" name="submit" value="SAVE">
 	</div>
 </form>
