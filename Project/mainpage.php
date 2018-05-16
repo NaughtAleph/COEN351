@@ -77,9 +77,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				$query .= " AND " . $category . "=1";
 			}
 			$result = mysqli_query($con,$query);
-			while($row = mysqli_fetch_array($result)) {
+			while($row = mysqli_fetch_assoc($result)) {
 				?>
-				<div class='book-item'>
+				<div class='book-item' onclick="window.location.href = 'item.php?id=<?php echo $row["id"];?>'">
 					<div class='book-title'><?php echo $row["title"]; ?></div>
 					<div class='book-author'><?php echo $row["author"]; ?></div>
 					<div class='book-price'>$<?php echo $row["price"]; ?></div>

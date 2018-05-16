@@ -1,0 +1,21 @@
+.review {
+	margin: 1%;
+	border: 1px solid grey;
+	box-shadow: 5px 5px 2px 2px grey;
+	padding: 1%;
+}
+
+.rev-author {
+	font-size: 14px;
+}
+
+#textbox {
+	margin: 1%;
+	padding: 1%;
+	width: 96%;
+	min-height: 50px; 
+}
+
+.right {
+	float: right;
+}
