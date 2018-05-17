@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 	<div class="form">
 		<p>Welcome <?php echo $_SESSION['username']; ?>!</p>
-		<p>This is secure area.</p>
+		<p>This is secure area. (click on title to view book and reviews)</p>
 		<p><a href="">Dashboard</a></p>
 		<p><a href="logout.php">Logout</a></p>
 		<p><a href="checkout.php">Checkout</a></p>
@@ -79,8 +79,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$result = mysqli_query($con,$query);
 			while($row = mysqli_fetch_assoc($result)) {
 				?>
-				<div class='book-item' onclick="window.location.href = 'item.php?id=<?php echo $row["id"];?>'">
-					<div class='book-title'><?php echo $row["title"]; ?></div>
+				<div class='book-item'>
+					<div class='book-title' onclick="window.location.href = 'item.php?id=<?php echo $row["id"];?>'"><?php echo $row["title"]; ?></div>
 					<div class='book-author'><?php echo $row["author"]; ?></div>
 					<div class='book-price'>$<?php echo $row["price"]; ?></div>
 					<form class='add-to-cart' method="post" action="<?php $_SERVER["REQUEST_URI"]; ?>">
