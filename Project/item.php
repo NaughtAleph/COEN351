@@ -78,6 +78,7 @@ $reviews = mysqli_query($con,"SELECT * FROM Reviews WHERE bookid=$id");
 			<?php }
 		?>
 	</div>
+	<div>PERSISTENT XSS VULNERABILITY</div>
 	<form method="post" action="review.php">
 		<textarea id="textbox" name="review" class="review" placeholder="Add a review"></textarea>
 		<input type="hidden" name="id" value="<?php echo $id; ?>" >

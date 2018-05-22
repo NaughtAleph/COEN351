@@ -18,11 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			else
 				$cart[$id] = $num;
 			setcookie("cart",json_encode($cart), time() + (86400 * 30),
-					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true);
+					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true, true);
 		} else {
 			$cart = array($id => $num);
 			setcookie("cart",json_encode($cart),time() + (86400 * 30),
-					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true);
+					dirname($_SERVER["REQUEST_URI"]),$_SERVER['host'], true, true);
 			}
 	}
 }
@@ -67,6 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<div>
 			<input type="checkbox" id="fantasy" onclick="refine()" <?php echo (in_array("fantasy",$refine)? "checked='checked'" : ""); ?>> Fantasy
 		</div>
+	</div>
+	<div>
+		<?php echo "SELECT * FROM Books WHERE " . $refine[0] . "=1"; ?>
 	</div>
 	<div>
 		<?php
